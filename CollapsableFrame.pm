@@ -1,4 +1,4 @@
-$Tk::CollapsableFrame::VERSION = '1.0';
+$Tk::CollapsableFrame::VERSION = '1.1';
 
 package Tk::CollapsableFrame;
 
@@ -72,7 +72,7 @@ sub Populate {
     );
 
     $self->{colf} = $self->{frame}->Frame;
-    $self->{colf}->place(qw/-x 20 -y 15/);
+    $self->{colf}->place(qw/-x 20 -y 15 -relwidth 1.0 -width -20/);
     $self->Advertise('colf' => $self->{colf});
 
     if (not defined $args->{-width}) {
@@ -92,14 +92,7 @@ sub Populate {
 
 sub bias {return $cf_height_bias}
 
-# Instance methods.
-
-sub toggle {
-    my($self) = @_;
-    my $i = $self->{opcl}->cget(-image);
-    my $op = ($i == $im_Open) ? 'open' : 'close';
-    $self->$op();
-}
+# Public instance methods.
 
 sub close {
     my($self) = @_;
@@ -112,6 +105,22 @@ sub open  {
     $self->{opcl}->configure(-image  => $im_Close);
     $self->{frame}->configure(-height => $self->{opcl}->cget(-text));
 }
+
+sub state {
+    my($self) = @_;
+    my $i = $self->{opcl}->cget(-image);
+    my $op = ($i == $im_Open) ? 'close' : 'open';
+    return $op;
+}
+
+sub toggle {
+    my($self) = @_;
+    my $i = $self->{opcl}->cget(-image);
+    my $op = ($i == $im_Open) ? 'open' : 'close';
+    $self->$op();
+}
+
+# Private instance methods.
 
 sub height {
     my($self, $h) = @_;
@@ -163,6 +172,11 @@ Closes the CollapsableFrame.
 
 Opens the CollapsableFrame.
 
+=item B<state>
+
+Returns the open/close state of the CollapsableFrame, either
+"open" or "close".
+
 =item B<toggle>
 
 Toggles the open/close state of the CollapsableFrame.
@@ -206,7 +220,7 @@ Valid subwidget names are listed below.
 
 Stephen.O.Lidie@Lehigh.EDU, 2000/11/27.
 
-Copyright (C) 2000 - 2002, Stephen O. Lidie.
+Copyright (C) 2000 - 2003, Stephen O. Lidie.
 
 This program is free software, you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -8,7 +8,7 @@ my $mw = MainWindow->new;
 
 my $cf = $mw->CollapsableFrame(
     -width  => 300,
-    -height => 110,
+    -height => 510,
     -title  => "Copy Details",
 );
 $cf->pack(qw/-fill x -expand 1/);
