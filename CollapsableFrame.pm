@@ -1,4 +1,4 @@
-$Tk::CollapsableFrame::VERSION = '1.1';
+$Tk::CollapsableFrame::VERSION = '1.2';
 
 package Tk::CollapsableFrame;
 
@@ -18,13 +18,23 @@ sub ClassInit {
 
     $cf_height_bias = 22;
 
-    $im_Close = $mw->Photo(-data =>
-     'R0lGODlhEAAQAKIAAP///9TQyICAgEBAQAAAAAAAAAAAAAAAACwAAAAAEAAQAAADMxi63BMg
-      yinFAy0HC3XjmLeA4ngpRKoSZoeuDLmo38mwtVvKu93rIo5gSCwWB8ikcolMAAA7');
+    $im_Close = $mw->Bitmap(-data => <<'END');
+#define close_width 16
+#define close_height 16
+static unsigned char close_bits[] = {
+  0x00, 0x80, 0x00, 0xc0, 0x00, 0xc0, 0x00, 0xc0, 0x00, 0xc0, 0x00, 0xc0,
+  0xf0, 0xc7, 0xe0, 0xc3, 0xc0, 0xc1, 0x80, 0xc0, 0x00, 0xc0, 0x00, 0xc0,
+  0x00, 0xc0, 0x00, 0xc0, 0xfe, 0xff, 0xff, 0xff, };
+END
 
-    $im_Open = $mw->Photo(-data =>
-     'R0lGODlhEAAQAKIAAP///9TQyICAgEBAQAAAAAAAAAAAAAAAACwAAAAAEAAQAAADNhi63BMg
-      yinFAy0HC3Xj2EJoIEOM32WeaSeeqFK+say+2azUi+5ttx/QJeQIjshkcsBsOp/MBAA7');
+    $im_Open = $mw->Bitmap(-data => << 'END');
+#define open_width 16
+#define open_height 16
+static unsigned char open_bits[] = {
+  0x00, 0x80, 0x00, 0xc0, 0x00, 0xc0, 0x00, 0xc0, 0x40, 0xc0, 0xc0, 0xc0,
+  0xc0, 0xc1, 0xc0, 0xc3, 0xc0, 0xc1, 0xc0, 0xc0, 0x40, 0xc0, 0x00, 0xc0,
+  0x00, 0xc0, 0x00, 0xc0, 0xfe, 0xff, 0xff, 0xff, };
+END
     
     $class->SUPER::ClassInit($mw);
 
@@ -80,7 +90,7 @@ sub Populate {
     }
 
     $self->ConfigSpecs(
-      -background  => [qw/SELF background Background/],
+      -background  => [['SELF', 'CHILDREN'], qw/background Background/],
       -height      => [qw/METHOD height Height 47/],
       -image       => [$self->{opcl}, 'image', 'Image', $im_Open],
       -title       => '-text',
